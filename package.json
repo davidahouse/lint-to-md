@@ -1,0 +1,32 @@
+{
+  "name": "lint-to-md",
+  "main": "bin/lint-to-md.js",
+  "version": "0.1.0",
+  "description": "A command line app for turning android lint output to markdown",
+  "license": "MIT",
+  "repository": "davidahouse/lint-to-md",
+  "preferGlobal": true,
+  "bin": {
+    "lint-to-md": "bin/lint-to-md.js"
+  },
+  "dependencies": {
+    "chalk": "^2.4.2",
+    "clear": "^0.1.0",
+    "figlet": "^1.2.1",
+    "glob": "^7.1.6",
+    "js-yaml": "^3.13.1",
+    "line-reader": "^0.4.0",
+    "pkginfo": "^0.4.1",
+    "rc": "^1.2.8",
+    "xml2js": "^0.4.23"
+  },
+  "devDependencies": {
+    "eslint": "^6.5.1",
+    "eslint-config-google": "^0.14.0",
+    "eslint-config-prettier": "^6.5.0"
+  },
+  "scripts": {
+    "lint": "eslint $(find . -name \"*.js\" -not -path \"./node_modules/*\" -not -path \"./public/*\")",
+    "lint-fix": "eslint --fix $(find . -name \"*.js\" -not -path \"./node_modules/*\" -not -path \"./public/*\")"
+  }
+}
