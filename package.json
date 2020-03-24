@@ -1,7 +1,7 @@
 {
   "name": "lint-to-md",
   "main": "bin/lint-to-md.js",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A command line app for turning android lint output to markdown",
   "license": "MIT",
   "repository": "davidahouse/lint-to-md",
