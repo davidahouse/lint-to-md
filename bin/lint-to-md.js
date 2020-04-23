@@ -14,19 +14,19 @@ if (process.argv.length > 2) {
 }
 
 let sha = null;
-if (process.argv.length > 4) {
-  sha = process.argv[4];
+if (process.argv.length > 3) {
+  sha = process.argv[3];
 }
 
 let repoUrl = null;
-if (process.argv.length > 5) {
-  repoUrl = process.argv[5];
+if (process.argv.length > 4) {
+  repoUrl = process.argv[4];
 }
 
-glob("**/lint-results.xml", async function(err, files) {
+glob("**/lint-results.xml", async function (err, files) {
   // console.dir(files);
   for (let index = 0; index < files.length; index++) {
-    parseString(fs.readFileSync(files[index]), function(err, result) {
+    parseString(fs.readFileSync(files[index]), function (err, result) {
       for (let iindex = 0; iindex < result.issues.issue.length; iindex++) {
         lintResults.push(result.issues.issue[iindex]);
       }
@@ -42,7 +42,7 @@ glob("**/lint-results.xml", async function(err, files) {
 
 function outputText() {
   let files = {};
-  lintResults.forEach(function(finding) {
+  lintResults.forEach(function (finding) {
     for (let index = 0; index < finding.location.length; index++) {
       const fileName = finding.location[index]["$"].file.replace(
         rootPrefix + "/",
@@ -50,7 +50,7 @@ function outputText() {
       );
       if (files[fileName] == null) {
         files[fileName] = {
-          findings: [finding]
+          findings: [finding],
         };
       } else {
         files[fileName].findings.push(finding);
@@ -58,7 +58,7 @@ function outputText() {
     }
   });
 
-  Object.keys(files).forEach(function(key) {
+  Object.keys(files).forEach(function (key) {
     if (sha != null && repoUrl != null) {
       console.log(
         "### [" + key + "](" + repoUrl + "/blob/" + sha + "/" + key + ")"
@@ -71,7 +71,7 @@ function outputText() {
     console.log("Finding | Line | Description ");
     console.log("------- | ---- | ------------");
 
-    files[key].findings.forEach(function(finding) {
+    files[key].findings.forEach(function (finding) {
       let output = "";
       if (finding["$"].severity === "Warning") {
         output += ":warning: ";
@@ -117,7 +117,7 @@ function outputText() {
 function outputSummary() {
   let warnings = 0;
   let errors = 0;
-  lintResults.forEach(function(finding) {
+  lintResults.forEach(function (finding) {
     if (finding["$"]["severity"] === "Warning") {
       warnings += 1;
     } else {
