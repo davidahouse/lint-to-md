@@ -41,8 +41,14 @@ glob("**/lint-results.xml", async function (err, files) {
     outputSummary();
   } else {
     if (lintResults.length > 0) {
-      console.log("lint findings detected, so returning a non-zero exit code");
-      process.exit(1);
+      lintResults.forEach(function (finding) {
+        if (finding["$"]["severity"] === "Error") {
+          console.log(
+            "lint findings detected, so returning a non-zero exit code"
+          );
+          process.exit(1);
+        }
+      });
     }
   }
 });
@@ -86,10 +92,15 @@ function outputText() {
         output += ":rotating_light: ";
       }
       output += finding["$"].summary + " | ";
-      if (sha != null && repoUrl != null) {
+      if (
+        sha != null &&
+        repoUrl != null &&
+        finding.location.length > 0 &&
+        finding.location[0]["$"].line != null
+      ) {
         output +=
           "[" +
-          finding.line +
+          finding.location[0]["$"].line +
           "](" +
           repoUrl +
           "/blob/" +
@@ -97,11 +108,11 @@ function outputText() {
           "/" +
           key +
           "#L" +
-          finding.line +
+          finding.location[0]["$"].line +
           ") | ";
         output +=
           "[" +
-          finding.reason +
+          finding["$"].message +
           "](" +
           repoUrl +
           "/blob/" +
@@ -109,10 +120,16 @@ function outputText() {
           "/" +
           key +
           "#L" +
-          finding.line +
+          finding.location[0]["$"].line +
           ") | ";
-      } else {
+      } else if (
+        finding.location.length > 0 &&
+        finding.location[0]["$"].line != null
+      ) {
         output += finding.location[0]["$"].line + " | ";
+        output += finding["$"].message;
+      } else {
+        output += "n/a | ";
         output += finding["$"].message;
       }
       console.log(output);
