@@ -8,7 +8,7 @@ const lintResults = [];
 
 const rootPrefix = path.dirname(path.resolve("."));
 
-let output = "summary";
+let output = "status";
 if (process.argv.length > 2) {
   output = process.argv[2];
 }
@@ -27,16 +27,23 @@ glob("**/lint-results.xml", async function (err, files) {
   // console.dir(files);
   for (let index = 0; index < files.length; index++) {
     parseString(fs.readFileSync(files[index]), function (err, result) {
-      for (let iindex = 0; iindex < result.issues.issue.length; iindex++) {
-        lintResults.push(result.issues.issue[iindex]);
+      if (result.issues.issue != null) {
+        for (let iindex = 0; iindex < result.issues.issue.length; iindex++) {
+          lintResults.push(result.issues.issue[iindex]);
+        }
       }
     });
   }
 
   if (output === "text") {
     outputText();
-  } else {
+  } else if (output === "summary") {
     outputSummary();
+  } else {
+    if (lintResults.length > 0) {
+      console.log("lint findings detected, so returning a non-zero exit code");
+      process.exit(1);
+    }
   }
 });
 
