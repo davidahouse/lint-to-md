@@ -88,7 +88,7 @@ function outputText() {
       let output = "";
       if (finding["$"].severity === "Warning") {
         output += ":warning: ";
-      } else {
+      } else (finding["$"].severity === "Error") {
         output += ":rotating_light: ";
       }
       output += finding["$"].summary + " | ";
@@ -139,11 +139,14 @@ function outputText() {
 }
 
 function outputSummary() {
+  let information = 0;
   let warnings = 0;
   let errors = 0;
   lintResults.forEach(function (finding) {
     if (finding["$"]["severity"] === "Warning") {
       warnings += 1;
+    } else if (finding["$"]["severity"] === "Information") {
+      information += 1;
     } else {
       errors += 1;
     }
@@ -151,6 +154,9 @@ function outputSummary() {
 
   console.log("### Lint Summary:");
   console.log(" ");
+  console.log(
+    "- :page_facing_up: " + information.toString() + " Information(s)"
+  );
   console.log("- :warning: " + warnings.toString() + " Warning(s)");
   console.log("- :rotating_light: " + errors.toString() + " Error(s)");
 }
