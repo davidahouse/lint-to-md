@@ -88,7 +88,7 @@ function outputText() {
       let output = "";
       if (finding["$"].severity === "Warning") {
         output += ":warning: ";
-      } else (finding["$"].severity === "Error") {
+      } else if (finding["$"].severity === "Error") {
         output += ":rotating_light: ";
       }
       output += finding["$"].summary + " | ";
