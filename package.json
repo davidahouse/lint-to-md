@@ -10,7 +10,7 @@
     "lint-to-md": "bin/lint-to-md.js"
   },
   "dependencies": {
-    "glob": "^8.0.3",
+    "glob": "^9.0.0",
     "line-reader": "^0.4.0",
     "pkginfo": "^0.4.1",
     "xml2js": "^0.4.23"
